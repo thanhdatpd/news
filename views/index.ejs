@@ -102,6 +102,93 @@
   </div>
   <!-- end modal-dialog -->
 
+  <!-- custom modal -->
+
+<div id="full-width-modal-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-full-width">
+    <div class="modal-content">
+      <div class="modal-header d-flex align-items-center">
+        <h4 class="modal-title" id="fullWidthModalLabel">Edit new post</h4>
+        <button type="button" class="close ml-auto" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal striped-rows b-form" action="" method="get">
+          <div class="card-body">
+            <div class="form-group row border-bottom mb-0 py-3 bg-light">
+              <div class="col-sm-3">
+                <div class="d-flex align-items-center justify-content-end">
+                  <label for="inputEmail3" class="control-label col-form-label">Title</label>
+                </div>
+              </div>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="inputEmail3" placeholder="Title...">
+              </div>
+            </div>
+            <div class="form-group row border-bottom mb-0 py-3 bg-light">
+              <div class="col-sm-3">
+                <div class="d-flex align-items-center justify-content-end">
+                  <label for="inputEmail3" class="control-label col-form-label">Description</label>
+                </div>
+              </div>
+              <div class="col-sm-9">
+                <textarea type="text" class="form-control" id="inputEmail3" placeholder="Description..."> </textarea>
+              </div>
+            </div>
+            <div class="form-group row border-bottom mb-0 py-3 bg-light">
+              <div class="col-sm-3">
+                <div class="d-flex align-items-center justify-content-end">
+                  <label for="inputEmail3" class="control-label col-form-label">Content</label>
+                </div>
+              </div>
+              <div class="col-sm-9">
+
+                <!-- check editer -->
+
+                <div class="summernote" style="">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row border-bottom mb-0 py-3 bg-light">
+              <div class="col-sm-3">
+                <div class="d-flex align-items-center justify-content-end">
+                  <label for="inputEmail3" class="control-label col-form-label">Select File</label>
+                </div>
+              </div>
+              <div class="col-sm-9">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Image</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01">
+                    <label class="custom-file-label" onchange="readURL(this);" for="inputGroupFile01">Choose
+                      Image</label>
+                  </div>
+                </div>
+                <div id="fdsfsfsd" style="width: 100%; display:flex; justify-content:center;">
+                  <!-- <img class="blah" src="http://placehold.it/180" alt="your image" /> -->
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+  
+  <!-- end -->
+
   <div class="preloader">
     <div class="lds-ripple">
       <div class="lds-pos"></div>
@@ -571,39 +658,25 @@
               </tr>
             </thead>
             <tbody>
+              <% data.forEach( (post, index) => { %>
               <tr>
-                <td class="footable-first-visible" style="display: table-cell;">1</td>
+                <td class="footable-first-visible" style="display: table-cell;"> <%=index+1 %> </td>
                 <td style="display: table-cell;">
-                  <a href="javascript:void(0)"><img src="../assets/images/users/4.jpg" alt="user" width="40"
-                      class="rounded-circle" /> Genelia Deshmukh</a>
+                  <a href="javascript:void(0)"> <%=post.title %></a>
                 </td>
-                <td style="display: table-cell;">genelia@gmail.com</td>
-                <td style="display: table-cell;">+123 456 789</td>
-                <td style="display: table-cell;"><span class="badge py-1 badge-danger">Designer</span></td>
                 <td style="display: table-cell;">
-                  <div class="action-btn">
-                    <a href="javascript:void(0)" class="text-info edit"><i class="mdi mdi-account-edit font-20"></i></a>
-                    <a href="javascript:void(0)" class="text-dark delete ml-2"><i class="mdi mdi-delete font-20"></i></a>
-                  </div>
+                  <a href="javascript:void(0)"><img src="./<%=post.image %>" alt="user" width="40" class="rounded-circle" /></a>
                 </td>
-              </tr>
-              <tr>
-                <td class="footable-first-visible" style="display: table-cell;">2</td>
-                <td style="display: table-cell;">
-                  <a href="javascript:void(0)"><img src="../assets/images/users/5.jpg" alt="user" width="40"
-                      class="rounded-circle" /> Arijit Singh</a>
-                </td>
-                <td style="display: table-cell;">arijit@gmail.com</td>
-                <td style="display: table-cell;">+234 456 789</td>
-                <td style="display: table-cell;"><span class="badge py-1 badge-info">Developer</span></td>
+                <td style="display: table-cell;"><%=post.description %></td>
+                <td style="display: table-cell;"><span class="badge py-1 badge-info"><%=post.content %></span></td>
                 <td style="display: table-cell;">
                 <div class="action-btn">
-                  <a href="javascript:void(0)" class="text-info edit"><i class="mdi mdi-account-edit font-20"></i></a>
-                  <a href="javascript:void(0)" class="text-dark delete ml-2"><i class="mdi mdi-delete font-20"></i></a>
+                  <a class="text-info edit" data-toggle="modal" data-target="#full-width-modal-edit"><i class="mdi mdi-account-edit font-24"></i></a>
+                  <a href="javascript:void(0)" class="text-dark delete ml-2"><i class="mdi mdi-delete font-24"></i></a>
                 </div>
-                
                 </td>
               </tr>
+              <% }) %>
             </tbody>
             <tfoot>
               <tr class="footable-paging">
@@ -744,7 +817,7 @@
             <li>
               <div class="message-center chat-scroll position-relative">
                 <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2"
-                  id="chat_user_1" data-user-id="1">
+                  id="chat_data_1" data-user-id="1">
                   <span class="user-img position-relative d-inline-block">
                     <img src="../assets/images/users/1.jpg" alt="user" class="rounded-circle w-100" /> <span
                       class="profile-status rounded-circle online"></span>

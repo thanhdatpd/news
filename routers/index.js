@@ -3,20 +3,21 @@ const router = express.Router();
 const {post} = require('./../function.js');
 //get all posts
 router.get("/", async (req, res) => {
-  res.json(await post.set({}, ""))
+  const data = await post.set({}, "");
+  return res.render("index", {data});
+});
+//post 1 posts
+router.get("/add", async (req, res) => {
+  return res.render("index");
 });
 //post 1 posts
 router.post("/add", async (req, res) => {
   res.json(await post.create(req.body))
 });
-//delete id post
-router.get("/test", async (req, res) => {
-  res.render('index')
-});
-
 //get id post
 router.get("/:id", async (req, res) => {
-  res.json(await post.get({ _id: req.params.id }, ''))
+  const { id } = req.params;
+  res.json(await post.get({ _id: id }, ""));
 });
 //update id post
 router.put("/:id", async (req, res) => {

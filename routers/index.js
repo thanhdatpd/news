@@ -1,19 +1,68 @@
 const express = require('express');
 const router = express.Router();
-const {post} = require('./../function.js');
+const multer = require("multer");
+const { post } = require('./../function.js');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname)
+  }
+});
+var upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    console.log(file);
+    if (file.mimetype == "image/jpg" || file.mimetype == "image/png" || file.mimetype == "image/jpeg" || file.mimetype == "image/gif") {
+      cb(null, true)
+    } else {
+      return cb(new Error('Only image are allowed!'))
+    }
+  }
+}).single("inputFile01");
 //get all posts
 router.get("/", async (req, res) => {
-  const data = await post.set({}, "");
-  return res.render("index", {data});
+  try {
+    const data = await post.set({}, "");
+    return res.render("index", { data });
+  } catch (error) {
+    res.json(error)
+  }
 });
-//post 1 posts
+//add 1 posts
 router.get("/add", async (req, res) => {
-  return res.render("index");
+  try {
+    const data = await post.set({}, "");
+    return res.render("index", { data });
+  } catch (error) {
+    res.json(error)
+  }
 });
 //post 1 posts
 router.post("/add", async (req, res) => {
-  res.json(await post.create(req.body))
-});
+  try {
+  await  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      console.log("A Multer error occurred when uploading.");
+    } else if (err) {
+      console.log("An unknown error occurred when uploading." + err);
+    }else {
+        const data = post.create({
+          title: req.body.title,
+          image: req.file.filename,
+          content: req.body.content,
+          description: req.body.description,
+        }); 
+      return res.render("index", { data });
+      }
+      
+    });
+  } catch (error) {
+    res.json(error)
+  }
+})
+ 
 //get id post
 router.get("/:id", async (req, res) => {
   const { id } = req.params;

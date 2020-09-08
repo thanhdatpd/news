@@ -17,7 +17,7 @@ const schemaPost = new Schema(
   {
     title: { type: String, default: "" },
     description: { type: String, default: "" },
-    image: { type: String, default: "/uploads/default.png" },
+    image: { type: String, default: "default.png" },
     content: { type: String, default: "" },
     timestamp: { type: Number, default: Date.now() },
   },
@@ -26,5 +26,5 @@ const schemaPost = new Schema(
   }
 );
 
-const Post = mongoose.model('Post', schemaPost, 'posts')
+const Post = mongoose.model('Post', schemaPost, 'posts');
 module.exports = Post;

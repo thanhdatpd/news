@@ -1,4 +1,4 @@
-const Post = require('./post');
+const Post = require('./postModel');
 class DB {
   constructor() {
     this.Post = Post;

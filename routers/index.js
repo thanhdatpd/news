@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require("multer");
 const { post } = require('./../function.js');
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/uploads')
   },
@@ -10,17 +10,16 @@ var storage = multer.diskStorage({
     cb(null, Date.now() + "-" + file.originalname)
   }
 });
-var upload = multer({
+const upload = multer({
   storage: storage,
   fileFilter: function (req, file, cb) {
-    console.log(file);
     if (file.mimetype == "image/jpg" || file.mimetype == "image/png" || file.mimetype == "image/jpeg" || file.mimetype == "image/gif") {
       cb(null, true)
     } else {
       return cb(new Error('Only image are allowed!'))
     }
   }
-}).single("inputFile01");
+}).single("inputFile01")
 //get all posts
 router.get("/", async (req, res) => {
   try {
@@ -40,9 +39,9 @@ router.get("/add", async (req, res) => {
   }
 });
 //post 1 posts
-router.post("/add", async (req, res) => {
+router.post("/add",  async (req, res) => {
   try {
-  await  upload(req, res, function (err) {
+  await upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       console.log("A Multer error occurred when uploading.");
     } else if (err) {
@@ -54,9 +53,8 @@ router.post("/add", async (req, res) => {
           content: req.body.content,
           description: req.body.description,
         }); 
-      return res.render("index", { data });
+      return res.redirect("/posts");
       }
-      
     });
   } catch (error) {
     res.json(error)

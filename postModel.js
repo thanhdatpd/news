@@ -17,7 +17,7 @@ const schemaPost = new Schema(
   {
     title: { type: String, default: "" },
     description: { type: String, default: "" },
-    image: { type: String, default: "default.png" },
+    image: { type: [] },
     content: { type: String, default: "" },
     timestamp: { type: Number, default: Date.now() },
   },

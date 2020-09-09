@@ -20,6 +20,17 @@ const upload = multer({
     }
   }
 }).single("inputFile01")
+
+const upload2 = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype == "image/jpg" || file.mimetype == "image/png" || file.mimetype == "image/jpeg" || file.mimetype == "image/gif") {
+      cb(null, true)
+    } else {
+      return cb(new Error('Only image are allowed!'))
+    }
+  }
+})
 //get all posts
 router.get("/", async (req, res) => {
   try {
@@ -60,6 +71,33 @@ router.post("/add",  async (req, res) => {
     res.json(error)
   }
 })
+router.post('/posts/addImage',upload2.single('file'),(req,res,next)=>{
+    let jsonSend = {
+        request: req.path,
+        title: "AlexStack post admin/img/upload response",
+        result: false,
+        error: "",
+        timestamp: Date.now(),
+        data: null
+    };
+    if(req.files){
+        console.log(req.files);
+        jsonSend.result = true;
+        jsonSend.data = req.files;
+        res.send(jsonSend);
+    } else if(req.file){
+        console.log("file",req.file);
+        jsonSend.result = true;
+        jsonSend.data = req.file;
+        res.send(jsonSend);
+    }
+    else{
+        jsonSend.error = "no file uplaod";
+        res.send(jsonSend);
+    }
+
+});
+
  
 //get id post
 router.get("/:id", async (req, res) => {

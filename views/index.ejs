@@ -1032,29 +1032,30 @@
         background:#2d2d2d;}
   </style>
   <script>
-    // function dm(){
-    //   var value = $('.custom-file-input').val();
-    //   $('#fdsfsfsd').append('<img id="blah" src="http://placehold.it/180" alt="your image" />');
-    // }
-    //      function readURL(input) {
-          
-    //         if (input.files && input.files[0]) {
-    //           var reader = new FileReader();
-
-    //           reader.onload = function (e) {
-    //             $('#blah').attr('src', e.target.result);
-                
-    //           };
-
-    //           reader.readAsDataURL(input.files[0]);
-    //         }
-    //       }
-    /************************************/
-    //default editor
-    /************************************/
+    $(document).ready(function () {
     $('.summernote').summernote({
-      height: 350, });
-
+        height: 200,
+        onImageUpload: function (files, editor, welEditable) {
+          sendFile(files[0], editor, welEditable);
+        }
+      });
+      function sendFile(file, editor, welEditable) {
+        data = new FormData();
+        data.append("file", file);
+        $.ajax({
+          data: data,
+          type: "POST",
+          url: "/posts/addImage",
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: function (url) {
+            console.log(url);
+           // editor.insertImage(welEditable, url);
+          }
+        });
+      }
+    })
     
 
       // $('#save').click(function(){
